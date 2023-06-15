@@ -138,6 +138,9 @@ def register():
 
     return render_template('register.html', form=form)
 
+
+search_result = []
+search_word = []
 @app.route('/')
 def show_all():
     data = [post.to_dict() for post in Post.query.all()]
