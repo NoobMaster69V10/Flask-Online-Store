@@ -1,0 +1,52 @@
+{% extends 'index.html'%}
+
+{% block title %}Update Post{% endblock %}
+
+{% block header %}
+    <header class="header">
+            <div class="container">
+                <div class="header_inner">
+                    <a href="/" class="header_logo">
+                        <svg class="header_icon">
+                            <use xlink:href="#cart-icon"></use>
+                        </svg>
+                    </a>
+
+                    <nav class="nav">
+                        <ul class="nav_inner">
+                            <li class="nav_link">
+                                <a href="/">Home</a>
+                            </li>
+                            <li class="nav_link">
+                                <a href="/new">New Posts</a>
+                            </li>
+                            <li class="nav_link">
+                                <a href="/about">About</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+{% endblock %}
+
+{% block content %}
+    <main class="main clear">
+        <div class="login">
+            <h1 class="login_title">Sign Up</h1>
+            <form action="" method="post" class="login_form">
+                {{ form.hidden_tag() }}
+                <label for="username">
+                    <h1 class="login_form_title">Enter Username:</h1>
+                    {{ form.username(class_='login_form_input') }}
+                </label>
+                <label for="username">
+                    <h1 class="login_form_title">Enter Password:</h1>
+                    {{ form.password(class_='login_form_input') }}
+                </label>
+                {{ form.submit(class_='login_form_submit') }}
+            </form>
+            <a href="/login" class="register_link">Login</a>
+        </div>
+    </main>
+{% endblock %}
