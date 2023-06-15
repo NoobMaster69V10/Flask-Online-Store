@@ -1,0 +1,63 @@
+{% extends 'index.html'%}
+
+{% block title %}Profile{% endblock %}
+
+{% block header %}
+    <header class="header">
+            <div class="container">
+                <div class="header_inner">
+                    <a href="/" class="header_logo">
+                        <svg class="header_icon">
+                            <use xlink:href="#cart-icon"></use>
+                        </svg>
+                    </a>
+
+                    <nav class="nav">
+                        <ul class="nav_inner">
+                            <li class="nav_link">
+                                <a href="/">Home</a>
+                            </li>
+                            <li class="nav_link">
+                                <a href="/new">New Posts</a>
+                            </li>
+                            <li class="nav_link">
+                                <a href="/about">About</a>
+                            </li>
+                            <li class="nav_link form_link">
+                                <a href="/logout">
+                                    <h1>Logout</h1>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+{% endblock %}
+
+{% block content %}
+    <main class="main clear">
+        <div class="profile">
+            <div class="profile_header">
+                <h1 class="profile_title">Your Posts:</h1>
+                <a href="/add/post/{{ user }}">add post</a>
+            </div>
+            
+            <ul class="profile_inner">
+                {% for e in info %}
+                    <li class="profile_item">
+                        <div class="profile_actions">
+                            <a href="/update/{{ e.id }}">Update</a>
+                            <a href="/delete/{{ e.id }}">Delete</a>
+                        </div>
+                        <div class="profile_content">
+                            <img src="/static/files/{{ e.filename }}" alt="product_img">
+                            <h1>{{ e.name }}</h1>
+                            <h6>{{ e.price}} ₾</h6>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+{% endblock %}

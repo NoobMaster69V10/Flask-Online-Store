@@ -1,0 +1,89 @@
+{% extends 'index.html' %}
+
+
+{% block title %}Online Store | New posts{% endblock %}
+
+{% block sidebar %}
+    <!-- Sidebar -->
+    <aside class="categories">
+        <h1 class="categories_title">Categories:</h1>
+        <ul class="categories_inner">
+            {% for e in category_lst %}
+                <li class="categories_item">
+                    <a href="/category/{{ e }}">{{ e }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </aside>
+{% endblock %}
+
+{% block header %}
+    <header class="header">
+            <div class="container">
+                <div class="header_inner">
+                    <a href="/" class="header_logo">
+                        <svg class="header_icon">
+                            <use xlink:href="#cart-icon"></use>
+                        </svg>
+                    </a>
+                    <form action="/search/result" method="post" class="header_input">
+                        <label for="search_input">
+                            <input type="text" name="user_input" id="search_input" class="header_input_field" placeholder="Search">
+                        </label>
+                        <label for="button" class="search_btn">
+                            <svg class="search_icon">
+                                <use xlink:href="#search-icon"></use>
+                            </svg>
+                            <input type="submit" id="button" class="input_submit_btn">
+                        </label>
+
+                    </form>
+                    <nav class="nav">
+                        <ul class="nav_inner">
+                            <li class="nav_link">
+                                <a href="/">Home</a>
+                            </li>
+                            <li class="nav_link">
+                                <a href="/new">New Posts</a>
+                            </li>
+                            <li class="nav_link">
+                                <a href="/about">About</a>
+                            </li>
+                            <li class="nav_link form_link">
+                                <a href="/login">
+                                    <h1>Login</h1>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+{% endblock %}
+
+{% block content %}
+    <main class="main">
+        <!-- New posts -->
+        <div class="new_posts">
+            <div class="posts_header">
+                <h1 class="post_title">New products:</h1>
+            </div>
+            <ul class="posts_content">
+                {% for post in ordered_data %}
+                    <li class="post_link">
+                        <a href="/post/{{ post.id }}">
+                            <div class="post_item">
+                                <img src="/static/files/{{ post.filename }}" alt="product_img">
+                                <h1>{{ post.name }}</h1>
+                                <h6>{{ post.price }} ₾</h6>
+                            </div>
+                        </a>
+                        <a href="/category/{{ post.category }}" class="post_item_category">
+                            <h3>{{ post.category }}</h3>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+{% endblock %}

@@ -138,6 +138,57 @@ def register():
 
     return render_template('register.html', form=form)
 
+@app.route('/')
+def show_all():
+    data = [post.to_dict() for post in Post.query.all()]
+    category_lst = []
+    category_lst.clear()
+    for e in data:
+        category_lst.append(e['category'])
+    category_lst = list(set(category_lst))
+    search_result.clear()
+    search_word.clear()
+    return render_template('all_posts.html', data=data, category_lst=category_lst)
+
+
+@app.route('/all/order/<string:direct>')
+def all_order(direct):
+    data = [post.to_dict() for post in Post.query.all()]
+    ordered_data = None
+    category_lst = []
+    category_lst.clear()
+    for e in data:
+        category_lst.append(e['category'])
+    category_lst = list(set(category_lst))
+    if direct == 'down':
+        ordered_data = [post.to_dict() for post in Post.query.order_by(Post.price.desc())]
+    elif direct == 'up':
+        ordered_data = [post.to_dict() for post in Post.query.order_by(Post.price.asc())]
+    return render_template('sorted_posts.html', ordered_data=ordered_data, category_lst=category_lst,
+                           title='All products',
+                           link_up='/all/order/up', link_down='/all/order/down')
+
+
+@app.route('/profile/<string:user>')
+@login_required
+def profile(user):
+    info = Post.query.filter(Post.user == user).all()
+    return render_template('profile.html', info=info, user=user)
+
+
+@app.route('/new')
+def new_products():
+    data = [post.to_dict() for post in Post.query.all()]
+    ordered_data = [post.to_dict() for post in Post.query.order_by(Post.id.desc())]
+    category_lst = []
+    category_lst.clear()
+    for e in data:
+        category_lst.append(e['category'])
+    category_lst = list(set(category_lst))
+    search_result.clear()
+    search_word.clear()
+    return render_template('new_posts.html', ordered_data=ordered_data, category_lst=category_lst)
+
 
 with app.app_context():
     db.create_all()
