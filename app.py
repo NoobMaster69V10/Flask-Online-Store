@@ -337,6 +337,24 @@ def search():
     return render_template('search.html', lst=search_result, category_lst=category_lst, user_input=user_input)
 
 
+# Price search
+@app.route('/search/byPrice', methods=['GET', 'POST'])
+def price_search():
+    data = [post.to_dict() for post in Post.query.all()]
+    category_lst = []
+    category_lst.clear()
+    for e in data:
+        category_lst.append(e['category'])
+    category_lst = list(set(category_lst))
+    if request.method == 'POST':
+        from_price = request.form['from_price']
+        to_price = request.form['to_price']
+        result = [post.to_dict() for post in
+                  Post.query.filter(Post.price >= float(from_price)).filter(Post.price <= float(to_price))]
+
+        return render_template('price_sort.html', result=result, category_lst=category_lst, from_price=from_price, to_price=to_price)
+
+
 
 with app.app_context():
     db.create_all()
