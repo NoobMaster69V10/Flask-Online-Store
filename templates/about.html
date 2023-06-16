@@ -1,0 +1,70 @@
+{% extends 'index.html' %}
+
+
+{% block title %}Online Store | About{% endblock %}
+
+{% block header %}
+    <header class="header">
+            <div class="container">
+                <div class="header_inner">
+                    <a href="/" class="header_logo">
+                        <svg class="header_icon">
+                            <use xlink:href="#cart-icon"></use>
+                        </svg>
+                    </a>
+                    <form action="/search/result" method="post" class="header_input">
+                        <label for="search_input">
+                            <input type="text" name="user_input" id="search_input" class="header_input_field" placeholder="Search">
+                        </label>
+                        <label for="button" class="search_btn">
+                            <svg class="search_icon">
+                                <use xlink:href="#search-icon"></use>
+                            </svg>
+                            <input type="submit" id="button" class="input_submit_btn">
+                        </label>
+
+                    </form>
+                    <nav class="nav">
+                        <ul class="nav_inner">
+                            <li class="nav_link">
+                                <a href="/">Home</a>
+                            </li>
+                            <li class="nav_link">
+                                <a href="/new">New Posts</a>
+                            </li>
+                            <li class="nav_link">
+                                <a href="/about">About</a>
+                            </li>
+                            <li class="nav_link form_link">
+                                <a href="/login">
+                                    <h1>Login</h1>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+{% endblock %}
+
+{% block content %}
+    <main class="main clear">
+        {# about #}
+        <div class="about">
+            <h1 class="about_title">გუნდი 3</h1>
+            <h1 class="about_subtitle">გუნდის წევრები:</h1>
+            <ul class="about_inner">
+                <li class="about_item">გეგა გავაშელი</li>
+                <li class="about_item">ივანე გულიაშვილი</li>
+                <li class="about_item">გიორგი ძაბილაშვილი</li>
+                <li class="about_item">დავითი ორველაშვილი</li>
+                <li class="about_item">გიორგი უბილავა</li>
+            </ul>
+
+            <h1 class="about_desc_title">საიტის მოკლე აღწერა:</h1>
+            <div class="about_description">
+                ჩვენი აპლიკაცია არის online-store სადაც მომხმარებელს შეუძლია შეიძნოს მისთვის სასრუველი ნივთი და ასევე შეუძლია გაყიდოს იგი.
+            </div>
+        </div>
+    </main>
+{% endblock %}
