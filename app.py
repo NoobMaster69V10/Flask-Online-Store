@@ -337,6 +337,70 @@ def search():
     return render_template('search.html', lst=search_result, category_lst=category_lst, user_input=user_input)
 
 
+# Search sort
+@app.route('/search/result/order/<string:direct>')
+def search_order(direct):
+    ordered_data = None
+    title = None
+    data = [post.to_dict() for post in Post.query.all()]
+    info = {}
+    for e in search_result:
+        info[e['id']] = e['price']
+    sorted_info = sorted(info.items(), key=lambda x: x[1])
+
+    if direct == 'down':
+        ordered_data = []
+        title = f"'{search_word[0]}' Sorted by price decreasing"
+        sorted_info.reverse()
+        for i in sorted_info:
+            for e in search_result:
+                if i[0] == e['id']:
+                    ordered_data.append(e)
+
+    elif direct == 'up':
+        ordered_data = []
+        title = f"'{search_word[0]}' Sorted by price growing"
+        for i in sorted_info:
+            for e in search_result:
+                if i[0] == e['id']:
+                    ordered_data.append(e)
+
+    category_lst = []
+    category_lst.clear()
+    for e in data:
+        category_lst.append(e['category'])
+    category_lst = list(set(category_lst))
+    return render_template('sorted_posts.html', ordered_data=ordered_data, title=title,
+                           link_up='/search/result/order/up', link_down='/search/result/order/down',
+                           category_lst=category_lst)
+
+
+# About
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+# API
+@app.route('/api/posts')
+def get_students():
+    post_name = request.args.get('name')
+    post_price = request.args.get('price')
+    post_category = request.args.get('category')
+    post_description = request.args.get('description')
+    if post_name:
+        posts = [post.to_dict() for post in Post.query.filter(Post.name == post_name)]
+    elif post_price:
+        posts = [post.to_dict() for post in Post.query.filter(Post.price == post_price)]
+    elif post_category:
+        posts = [post.to_dict() for post in Post.query.filter(Post.category == post_category)]
+    elif post_description:
+        posts = [post.to_dict() for post in Post.query.filter(Post.description == post_description)]
+    else:
+        posts = [post.to_dict() for post in Post.query.all()]
+    return posts, 200
+
+
 # Price search
 @app.route('/search/byPrice', methods=['GET', 'POST'])
 def price_search():
