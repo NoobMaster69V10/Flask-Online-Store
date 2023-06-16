@@ -1,0 +1,47 @@
+{% extends 'index.html'%}
+
+{% block title %}Update Post{% endblock %}
+
+{% block content %}
+    <main class="main clear">
+     <!-- Update Form -->
+        <div class="add_post">
+            <div class="update_header">
+                <a href="/profile/{{ data.user }}">Back to profile</a>
+            </div>
+            <h1 class="add_post_title">update post {{ data.name }}</h1>
+            <form action="/update/{{ id }}" method="post" class="add_post_form" enctype="multipart/form-data">
+                {{form.hidden_tag()}}
+                <img src="/static/files/{{ data.filename }}" alt="" class="update_post_img">
+                <label for="name">
+                    <h1 class="add_post_subtitle">Enter Product Name:</h1>
+                    {{ form.name(class_="add_form_input", value_=data.name) }}
+                </label>
+                <label for="price">
+                    <h1 class="add_post_subtitle">Enter Product Price:</h1>
+                    {{ form.price(class_="add_form_input", value_=data.price) }}
+                </label>
+                <label for="category">
+                    <h1 class="add_post_subtitle">Enter Product Category:</h1>
+                    {{ form.category(class_="add_form_input", value_=data.category) }}
+                </label>
+                <label for="description">
+                    <h1 class="add_post_subtitle">Enter Product Description:</h1>
+                    {{ form.description(class_="add_form_input", value_=data.description) }}
+                </label>
+                <label for="" class="add_post_image">
+                    <h1>Choose Photo:</h1>
+                    <label for="file" class="add_post_icon">
+                        <svg class="image_icon">
+                            <use xlink:href="#plus-icon"></use>
+                        </svg>
+                        {{ form.file() }}
+                    </label>
+                </label>
+                <label for="" class="post_submit_btn">
+                    {{ form.submit(class_="add_form_btn") }}
+                </label>
+            </form>
+        </div>
+    </main>
+{% endblock %}

@@ -141,6 +141,8 @@ def register():
 
 search_result = []
 search_word = []
+
+
 @app.route('/')
 def show_all():
     data = [post.to_dict() for post in Post.query.all()]
@@ -193,7 +195,81 @@ def new_products():
     return render_template('new_posts.html', ordered_data=ordered_data, category_lst=category_lst)
 
 
+# Open post
+@app.route('/post/<int:id>')
+def show_post(id):
+    data = [post.to_dict() for post in Post.query.all()]
+    post_info = Post.query.filter_by(id=id).first().to_dict()
+    similar_lst = Post.query.filter(Post.category == post_info['category'])
+    category_lst = []
+    category_lst.clear()
+    for e in data:
+        category_lst.append(e['category'])
+    category_lst = list(set(category_lst))
+    search_result.clear()
+    search_word.clear()
+    return render_template('post_page.html', post_info=post_info, id=id, category_lst=category_lst,
+                           similar_lst=similar_lst)
+
+
+# Add post
+@app.route('/add/post/<string:username>', methods=['GET', 'POST'])
+@login_required
+def add_post(username):
+    search_result.clear()
+    search_word.clear()
+    form = PostForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        price = form.price.data
+        description = form.description.data
+        category = form.category.data
+        file = form.file.data
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'],
+                                   secure_filename(file.filename)))
+        else:
+            filename = 'placeholder.jpg'
+        upload = Post(user=username, name=name, price=price, description=description, category=category,
+                      filename=filename)
+        db.session.add(upload)
+        db.session.commit()
+
+        return f'<h1 style="text-align:center;">Your post added to the website <a href="/profile/{username}">back</a></h1>'
+    return render_template('add_form.html', form=form)
+
+
+# Update post
+@app.route('/update/<int:id>', methods=['POST', 'GET'])
+@login_required
+def update_post(id):
+    data_to_update = Post.query.filter_by(id=id).first()
+    form = PostForm()
+    if form.validate_on_submit():
+        data_to_update.name = form.name.data
+        data_to_update.price = form.price.data
+        data_to_update.description = form.description.data
+        data_to_update.category = form.category.data
+        file = form.file.data
+        if file:
+            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)), app.config['UPLOAD_FOLDER'],
+                                   secure_filename(file.filename)))
+            data_to_update.filename = secure_filename(file.filename)
+        db.session.commit()
+    return render_template('update_form.html', data=data_to_update, id=id, form=form)
+
+
+# Post delete
+@app.route('/delete/<int:id>')
+@login_required
+def delete_post(id):
+    post = Post.query.get(id)
+    db.session.delete(post)
+    db.session.commit()
+    return f'<h1 style="text-align:center;">Your post deleted <a href="/">back</a></h1>'
+
+
 with app.app_context():
     db.create_all()
     app.run()
-
