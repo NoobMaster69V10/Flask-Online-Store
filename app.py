@@ -268,6 +268,76 @@ def delete_post(id):
     return f'<h1 style="text-align:center;">Your post deleted <a href="/">back</a></h1>'
 
 
+# Category
+
+category_sort = []
+
+
+@app.route('/category/<string:category>')
+def show_category(category):
+    data = [post.to_dict() for post in Post.query.all()]
+
+    category_lst = []
+    category_lst.clear()
+    category_sort.clear()
+
+    for e in data:
+        category_lst.append(e['category'])
+    category_lst = list(set(category_lst))
+    result = [post.to_dict() for post in Post.query.filter(Post.category == category).all()]
+
+    for post in result:
+        category_sort.append(post)
+    search_result.clear()
+    search_word.clear()
+    return render_template('category.html', result=result, category=category, category_lst=category_lst)
+
+
+# Category sort
+@app.route('/category/order/<string:direct>')
+def category_order(direct):
+    data = [post.to_dict() for post in Post.query.all()]
+    title = None
+    ordered_data = None
+    if direct == 'up':
+        title = 'Sorted by price growing'
+        ordered_data = [post.to_dict() for post in
+                        Post.query.order_by(Post.price.asc()).filter(Post.category == category_sort[0]['category'])]
+    elif direct == 'down':
+        title = 'Sorted by price decreasing'
+        ordered_data = [post.to_dict() for post in
+                        Post.query.order_by(Post.price.desc()).filter(Post.category == category_sort[0]['category'])]
+
+    category_lst = []
+    category_lst.clear()
+    for e in data:
+        category_lst.append(e['category'])
+    category_lst = list(set(category_lst))
+
+    return render_template('sorted_posts.html', ordered_data=ordered_data, title=title,
+                           link_up='/category/order/up', link_down='/category/order/down',
+                           category_lst=category_lst)
+
+
+# Search
+@app.route('/search/result', methods=['POST'])
+def search():
+    data = [post.to_dict() for post in Post.query.all()]
+    user_input = request.form['user_input']
+    search_word.append(user_input)
+    category_lst = []
+    category_lst.clear()
+    for e in data:
+        category_lst.append(e['category'])
+    category_lst = list(set(category_lst))
+    if request.method == 'POST':
+        for post in data:
+            if user_input in post['name']:
+                search_result.append(post)
+    return render_template('search.html', lst=search_result, category_lst=category_lst, user_input=user_input)
+
+
+
 with app.app_context():
     db.create_all()
     app.run()
