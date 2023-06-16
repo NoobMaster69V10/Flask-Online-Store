@@ -1,0 +1,100 @@
+{% extends 'index.html' %}
+
+{% block title %}Online-Store | {{ post_info.name }}{% endblock %}
+
+{% block header %}
+    <header class="header">
+            <div class="container">
+                <div class="header_inner">
+                    <a href="/" class="header_logo">
+                        <svg class="header_icon">
+                            <use xlink:href="#cart-icon"></use>
+                        </svg>
+                    </a>
+                    <form action="/search/result" method="post" class="header_input">
+                        <label for="search_input">
+                            <input type="text" name="user_input" id="search_input" class="header_input_field" placeholder="Search">
+                        </label>
+                        <label for="button" class="search_btn">
+                            <svg class="search_icon">
+                                <use xlink:href="#search-icon"></use>
+                            </svg>
+                            <input type="submit" id="button" class="input_submit_btn">
+                        </label>
+
+                    </form>
+                    <nav class="nav">
+                        <ul class="nav_inner">
+                            <li class="nav_link">
+                                <a href="/">Home</a>
+                            </li>
+                            <li class="nav_link">
+                                <a href="/new">New Posts</a>
+                            </li>
+                            <li class="nav_link">
+                                <a href="/about">About</a>
+                            </li>
+                            <li class="nav_link form_link">
+                                <a href="/login">
+                                    <h1>Login</h1>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+{% endblock %}
+
+{% block content %}
+    <main class="main clear">
+        {# Post page #}
+        <div class="post">
+            <div class="creator_name">
+                <h1>Post Creator:</h1>
+                <h2>{{ post_info.user }}</h2>
+            </div>
+            <div class="post_content">
+                <img src="/static/files/{{ post_info.filename }}" alt="">
+                <h3>{{ post_info.name }}</h3>
+                <h1>{{ post_info.price }} ₾</h1>
+                <h2>Description:</h2>
+                <div>{{ post_info.description }}</div>
+                <h6>{{ post_info.category }}</h6>
+            </div>
+            <a href="/" class="post_buy_btn">Buy</a>
+        </div>
+
+        <div class="similar_posts">
+                <div class="container">
+                    <h1 class="similar_title">Similar Products:</h1>
+                    <ul class="similar_inner" id="similarList">
+                        {% for e in similar_lst %}
+                            <li class="similar_link">
+                                <a href="/post/{{ e.id }}">
+                                    <div class="similar_item">
+                                        <img src="/static/files/{{ e.filename }}" alt="product_img">
+                                        <h1>{{ e.name }}</h1>
+                                        <h6>{{ e.price }} ₾</h6>
+                                    </div>
+                                </a>
+                                <a href="/category/{{ e.category }}" class="similar_item_category">
+                                    <h3>{{ e.category }}</h3>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+    </main>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+    const similarList = document.getElementById("similarList");
+
+    if (similarList.scrollWidth > 760){
+        similarList.style.overflowX = 'scroll';
+    }
+    </script>
+{% endblock %}
