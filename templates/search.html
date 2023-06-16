@@ -50,14 +50,29 @@
 {% block sidebar %}
     <!-- Sidebar -->
     <aside class="categories">
-        <h1 class="categories_title">Categories:</h1>
-        <ul class="categories_inner">
-            {% for e in category_lst %}
-                <li class="categories_item">
-                    <a href="/category/{{ e }}">{{ e }}</a>
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="categories_header" id="catList">
+            <h1 class="categories_title">Categories:</h1>
+            <ul class="categories_inner">
+                {% for e in category_lst %}
+                    <li class="categories_item">
+                        <a href="/category/{{ e }}">{{ e }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <h1 class="price_title">Price:</h1>
+        <form method="post" action="/search/byPrice" class="categories_price">
+            <label for="from_price" class="price_item">
+                <h1>From:</h1>
+                <input type="number" class="price_input" name="from_price" value="0">
+            </label>
+            <label for="to_price" class="price_item">
+                <h1>To:</h1>
+                <input type="number" class="price_input" name="to_price" value="0">
+            </label>
+            <input type="submit" value="OK" class="price_submit">
+        </form>
     </aside>
 {% endblock %}
 {% block content %}
