@@ -50,6 +50,10 @@
     <main class="main clear">
         {# Post page #}
         <div class="post">
+            <div class="creator_name">
+                <h1>Post Creator:</h1>
+                <h2>{{ post_info.user }}</h2>
+            </div>
             <div class="post_content">
                 <img src="/static/files/{{ post_info.filename }}" alt="">
                 <h3>{{ post_info.name }}</h3>
@@ -64,7 +68,7 @@
         <div class="similar_posts">
                 <div class="container">
                     <h1 class="similar_title">Similar Products:</h1>
-                    <ul class="similar_inner">
+                    <ul class="similar_inner" id="similarList">
                         {% for e in similar_lst %}
                             <li class="similar_link">
                                 <a href="/post/{{ e.id }}">
@@ -83,4 +87,14 @@
                 </div>
             </div>
     </main>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+    const similarList = document.getElementById("similarList");
+
+    if (similarList.scrollWidth > 760){
+        similarList.style.overflowX = 'scroll';
+    }
+    </script>
 {% endblock %}

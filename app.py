@@ -194,7 +194,6 @@ def new_products():
     search_word.clear()
     return render_template('new_posts.html', ordered_data=ordered_data, category_lst=category_lst)
 
-
 # Open post
 @app.route('/post/<int:id>')
 def show_post(id):
@@ -210,7 +209,6 @@ def show_post(id):
     search_word.clear()
     return render_template('post_page.html', post_info=post_info, id=id, category_lst=category_lst,
                            similar_lst=similar_lst)
-
 
 # Add post
 @app.route('/add/post/<string:username>', methods=['GET', 'POST'])
