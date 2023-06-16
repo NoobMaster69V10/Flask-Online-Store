@@ -1,21 +1,7 @@
 {% extends 'index.html' %}
 
 
-{% block title %}Online Store | All Posts{% endblock %}
-
-{% block sidebar %}
-    <!-- Sidebar -->
-    <aside class="categories">
-        <h1 class="categories_title">Categories:</h1>
-        <ul class="categories_inner">
-            {% for e in category_lst %}
-                <li class="categories_item">
-                    <a href="/category/{{ e }}">{{ e }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </aside>
-{% endblock %}
+{% block title %}Online Store | Sort By Price{% endblock %}
 
 {% block header %}
     <header class="header">
@@ -61,30 +47,43 @@
         </header>
 {% endblock %}
 
+{% block sidebar %}
+    <!-- Sidebar -->
+    <aside class="categories">
+        <div class="categories_header" id="catList">
+            <h1 class="categories_title">Categories:</h1>
+            <ul class="categories_inner">
+                {% for e in category_lst %}
+                    <li class="categories_item">
+                        <a href="/category/{{ e }}">{{ e }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <h1 class="price_title">Price:</h1>
+        <form method="post" action="/search/byPrice" class="categories_price">
+            <label for="from_price" class="price_item">
+                <h1>From:</h1>
+                <input type="number" class="price_input" name="from_price" value="0">
+            </label>
+            <label for="to_price" class="price_item">
+                <h1>To:</h1>
+                <input type="number" class="price_input" name="to_price" value="0">
+            </label>
+            <input type="submit" value="OK" class="price_submit">
+        </form>
+    </aside>
+{% endblock %}
 {% block content %}
     <main class="main">
-        <!-- All posts -->
+        <!-- Category posts -->
         <div class="new_posts">
             <div class="posts_header">
-                <h1 class="post_title">All products:</h1>
-                <div class="posts_filter">
-                    <h1>Sort By:</h1>
-                    <a href="/all/order/down">
-                        <span>Price:</span>
-                        <svg class="arrow_down">
-                            <use xlink:href="#arrow-icon"></use>
-                        </svg>
-                    </a>
-                    <a href="/all/order/up">
-                        <span>Price:</span>
-                        <svg class="arrow_up">
-                            <use xlink:href="#arrow-icon"></use>
-                        </svg>
-                    </a>
-                </div>
+                <h1 class="post_title">Price: '{{ from_price }}₾ - {{ to_price }}₾':</h1>
             </div>
             <ul class="posts_content">
-                {% for e in data %}
+                {% for e in result %}
                     <li class="post_link">
                         <a href="/post/{{ e.id }}">
                             <div class="post_item">

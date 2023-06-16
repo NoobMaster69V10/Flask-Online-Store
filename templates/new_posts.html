@@ -87,3 +87,13 @@
         </div>
     </main>
 {% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+    const catList = document.getElementById("catList");
+
+    if (catList.scrollHeight > 450){
+        catList.style.overflowY = 'scroll';
+    }
+    </script>
+{% endblock %}
