@@ -267,7 +267,7 @@ def delete_post(id):
     post = Post.query.get(id)
     db.session.delete(post)
     db.session.commit()
-    return f'<h1 style="text-align:center;">Your post deleted <a href="/">back</a></h1>'
+    return redirect(f'/profile/{post.user}')
 
 
 # Category
